@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Reconstructora de Motores Del Sur II</title>
+<script>
+(function(){function tema(){var p=new Intl.DateTimeFormat("en-US",{timeZone:"America/Guatemala",hour:"numeric",minute:"numeric",hourCycle:"h23"}).formatToParts(new Date()),h=0,m=0;
+p.forEach(function(x){if(x.type==="hour")h=+x.value;if(x.type==="minute")m=+x.value});var t=h*60+m;
+document.documentElement.setAttribute("data-theme",(t>=420&&t<=720)?"light":"dark")}tema();setInterval(tema,60000)})();
+</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Reconstrucción y rectificado de motores en Calzada Aguilar Batres, zona 11, Ciudad de Guatemala.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,11 +24,11 @@
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0A0F20; --fg:#EEF1F8; --mute:#9AA3BE; --line:#232B45; --soft:#121933;
-  --blue:#6582FF; --red:#E4583A; --plate:#F7F7F7; --halo:#F7F7F7; --on-accent:#0A0F20; --photo:#050608; color-scheme:dark}}
+  --bg:#0B1536; --fg:#EEF2FB; --mute:#A6B0D2; --line:#25336A; --soft:#13204D;
+  --blue:#6582FF; --red:#E4583A; --plate:#F7F7F7; --halo:#F7F7F7; --on-accent:#0B1536; --photo:#050608; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0A0F20; --fg:#EEF1F8; --mute:#9AA3BE; --line:#232B45; --soft:#121933;
-  --blue:#6582FF; --red:#E4583A; --plate:#F7F7F7; --halo:#F7F7F7; --on-accent:#0A0F20; --photo:#050608; color-scheme:dark}
+  --bg:#0B1536; --fg:#EEF2FB; --mute:#A6B0D2; --line:#25336A; --soft:#13204D;
+  --blue:#6582FF; --red:#E4583A; --plate:#F7F7F7; --halo:#F7F7F7; --on-accent:#0B1536; --photo:#050608; color-scheme:dark}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -147,6 +152,10 @@ dialog button{font:600 14px var(--body);background:transparent;color:#EEF1F8;bor
 @media (max-width:420px){.valores{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.visor-inst img{transition:none}.visor-inst.corre .barra-p i{animation:none}}
 #chat .aviso{margin:0;padding:12px 14px;background:var(--soft);border-left:3px solid var(--blue);font-size:14.5px;line-height:1.5}
+/* logo en modo oscuro: contorno suave en vez de halo */
+:root[data-theme="dark"]{--halo:transparent}
+:root[data-theme="dark"] .logo-hero img,:root[data-theme="dark"] .marca img{filter:drop-shadow(0 0 1px rgba(255,255,255,.55)) drop-shadow(0 0 22px rgba(120,150,255,.28))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--halo:transparent}:root:not([data-theme="light"]) .logo-hero img,:root:not([data-theme="light"]) .marca img{filter:drop-shadow(0 0 1px rgba(255,255,255,.55)) drop-shadow(0 0 22px rgba(120,150,255,.28))}}
 /* contacto guiado */
 .nav-cta{font:600 14px var(--body);background:var(--red);color:#fff;border:0;padding:8px 14px;cursor:pointer}
 .nav-cta:hover{background:var(--blue)}
@@ -299,7 +308,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
   </section>
 
   <footer>
-    <span>© 2026 Reconstructora de Motores Del Sur II · <small>v27.10-1040</small></span>
+    <span>© 2026 Reconstructora de Motores Del Sur II · <small>v27.10-1045</small></span>
     <span>Calzada Aguilar Batres 8-28, zona 11, Guatemala</span>
   </footer>
 </div>
