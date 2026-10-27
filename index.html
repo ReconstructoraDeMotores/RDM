@@ -356,16 +356,20 @@ document.getElementById("filtros").addEventListener("click",e=>{const b=e.target
  document.querySelectorAll("#filtros button").forEach(x=>x.setAttribute("aria-pressed",x===b));
  const f=b.dataset.f;cont.querySelectorAll(".grupo").forEach(g=>g.hidden=!(f==="todos"||g.dataset.c===f));});
 
-const WA="50233999363",chat=document.getElementById("chat");let prodSel=null;
+const VENDEDORES=["50253369812","50246661983","50280000385","50224568891"],GARANTIAS="50233177641";
+const chat=document.getElementById("chat");let prodSel=null;
+function vendedor(){let i=null;try{i=localStorage.getItem("rdm_vendedor")}catch(e){}
+ if(i===null||!VENDEDORES[+i]){i=Math.floor(Math.random()*VENDEDORES.length);try{localStorage.setItem("rdm_vendedor",i)}catch(e){}}
+ return VENDEDORES[+i]}
 const PROBLEMAS=["Falla mecánica","Fugas","Overhaul","Garantías"];
-const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+const wa=(t,n)=>"https://wa.me/"+(n||vendedor())+"?text="+encodeURIComponent(t);
 function base(){let t="¡Hola! 👋 Les escribo desde la página web de Reconstructora de Motores Del Sur II.";
  if(prodSel!==null)t+=" Me interesa el motor *"+motores[prodSel].t+"*"+(motores[prodSel].l?" ("+motores[prodSel].l+")":"")+", Ref. "+String(motores[prodSel].f+1).padStart(2,"0")+".";return t}
 function abierto(){const h=+new Intl.DateTimeFormat("en-US",{timeZone:"America/Guatemala",hour:"numeric",hourCycle:"h23"}).format(new Date());return h>=7&&h<17}
 const FUERA=()=>abierto()?"":" Sé que en este momento están fuera de horario, quedo atento a su respuesta. 🙏";
 function paso(n){chat.querySelectorAll(".paso-chat").forEach(p=>p.hidden=p.dataset.p!=n)}
 function armar(){document.getElementById("chat-no").href=wa(base()+" Me gustaría recibir más información sobre sus servicios y motores. ¡Muchas gracias! 😊"+FUERA());
- document.getElementById("chat-ops").innerHTML=PROBLEMAS.map(p=>`<a class="op" target="_blank" rel="noopener" href="${wa(base()+" Tengo un problema con mi motor: *"+p+"*. ¿Me pueden ayudar a revisarlo? ¡Muchas gracias! 🔧"+FUERA())}">${p}</a>`).join("")}
+ document.getElementById("chat-ops").innerHTML=PROBLEMAS.map(p=>`<a class="op" target="_blank" rel="noopener" href="${wa(base()+" Tengo un problema con mi motor: *"+p+"*. ¿Me pueden ayudar a revisarlo? ¡Muchas gracias! 🔧"+FUERA(),p==="Garantías"?GARANTIAS:null)}">${p}</a>`).join("")}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-contacto]");if(!b)return;e.preventDefault();
  prodSel=b.dataset.prod!=null?+b.dataset.prod:null;document.getElementById("chat-aviso").hidden=abierto();armar();paso(1);if(chat.showModal)chat.showModal();});
 document.getElementById("chat-si").onclick=()=>paso(2);
