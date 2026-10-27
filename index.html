@@ -86,6 +86,12 @@ h2{font-family:var(--display);font-stretch:110%;font-weight:800;font-size:clamp(
 .filtros button:hover{border-color:var(--blue)}
 .prod{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .card{border:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;min-width:0}
+.card .foto.sin{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:default;color:#5A6488;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.card .foto.sin svg{width:42%;height:auto}
+.stock{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:14px;color:var(--fg)}
+.stock::before{content:"";width:8px;height:8px;border-radius:50%;background:#2E9E5B}
+.resumen{font-family:var(--mono);font-size:13px;color:var(--mute);margin:0 0 28px}
+.resumen b{color:var(--fg)}
 .grupo+.grupo{margin-top:48px}
 .g-tit{font-family:var(--display);font-stretch:110%;font-size:22px;font-weight:800;text-transform:uppercase;margin:0 0 16px;padding-bottom:10px;border-bottom:2px solid var(--fg);display:flex;align-items:baseline;gap:10px}
 .g-tit span{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--red)}
@@ -134,11 +140,11 @@ dialog button{font:600 14px var(--body);background:transparent;color:#EEF1F8;bor
 /* nosotros: fotos + filosofia */
 .nos{display:grid;grid-template-columns:minmax(0,460px) 1fr;gap:40px 64px;align-items:center}
 .visor-inst{position:relative;aspect-ratio:4/5;max-width:100%;width:100%;overflow:hidden;background:var(--photo)}
-.visor-inst img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.4s ease}
+.visor-inst img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s ease}
 .visor-inst img.on{opacity:1}
 .visor-inst .barra-p{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.25)}
 .visor-inst .barra-p i{display:block;height:100%;width:0;background:var(--red)}
-.visor-inst.corre .barra-p i{animation:llena 5.5s linear forwards}
+.visor-inst.corre .barra-p i{animation:llena 1.5s linear forwards}
 @keyframes llena{to{width:100%}}
 .filo{min-width:0}
 .frase{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:clamp(32px,4.4vw,56px);line-height:.98;text-transform:uppercase;margin:0 0 18px;text-wrap:balance}
@@ -269,6 +275,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
       <button type="button" data-f="v6" aria-pressed="false">V6</button>
       <button type="button" data-f="l4" aria-pressed="false">4 cilindros en línea</button>
     </div>
+    <p class="resumen" id="resumen"></p>
     <div class="prodwrap" id="prod"></div>
   </section>
 
@@ -308,7 +315,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
   </section>
 
   <footer>
-    <span>© 2026 Reconstructora de Motores Del Sur II · <small>v27.10-1045</small></span>
+    <span>© 2026 Reconstructora de Motores Del Sur II · <small>v27.10-1050</small></span>
     <span>Calzada Aguilar Batres 8-28, zona 11, Guatemala</span>
   </footer>
 </div>
@@ -333,25 +340,29 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
 </dialog>
 <script>
 const motores=[
- {f:0,c:"v6",m:"Hyundai / Kia",cod:"G6DJ",l:"3.8 L",d:"Motor V6 Lambda completo, con múltiple de admisión y accesorios."},
- {f:7,c:"v6",m:"Nissan",cod:"VQ35DE",l:"3.5 L",d:"Motor V6 completo, con múltiple de admisión."},
- {f:8,c:"v6",m:"Toyota",cod:"2GR-FE",l:"3.5 L",d:"Motor V6 sin múltiple superior, listo para armar."},
- {f:1,c:"l4",m:"Honda",cod:"R18A1",l:"1.8 L",d:"Motor completo con múltiple de admisión y cuerpo de aceleración."},
- {f:4,c:"l4",m:"Hyundai / Kia",cod:"G4NH",l:"2.0 L",d:"Motor Nu completo, con bobinas y múltiple de admisión."},
- {f:6,c:"l4",m:"Nissan",cod:"HR16DE",l:"1.6 L",d:"Motor completo con cableado y múltiple de admisión."},
- {f:2,c:"l4",m:"Nissan",cod:"MR20DE",l:"2.0 L",d:"Motor completo con múltiple de admisión."},
- {f:5,c:"l4",m:"Nissan",cod:"QR25DE",l:"2.5 L",d:"Motor completo con múltiple de admisión."},
- {f:3,c:"l4",m:"Toyota",cod:"2AZ-FE",l:"2.4 L",d:"Motor sin múltiple de admisión, listo para armar."},
- {f:9,c:"l4",m:"Toyota",cod:"2ZR-FE",l:"1.8 L",d:"Motor completo con volante y clutch instalados."}
+ {f:0,r:1,s:1,c:"v6",m:"Hyundai / Kia",cod:"G6DJ",l:"3.8 L",d:"Motor V6 Lambda completo, con múltiple de admisión y accesorios."},
+ {f:7,r:8,s:2,c:"v6",m:"Nissan",cod:"VQ35DE",l:"3.5 L",d:"Motor V6 completo, con múltiple de admisión."},
+ {f:8,r:9,s:1,c:"v6",m:"Toyota",cod:"2GR-FE",l:"3.5 L",d:"Motor V6 sin múltiple superior, listo para armar."},
+ {f:1,r:2,s:1,c:"l4",m:"Honda",cod:"R18A1",l:"1.8 L",d:"Motor completo con múltiple de admisión y cuerpo de aceleración."},
+ {f:4,r:5,s:7,c:"l4",m:"Hyundai / Kia",cod:"G4NH",l:"2.0 L",d:"Motor Nu completo, con bobinas y múltiple de admisión."},
+ {f:null,r:11,s:1,c:"l4",m:"Hyundai / Kia",cod:"G4NC",l:"2.0 L",d:"Motor Nu de inyección directa."},
+ {f:null,r:12,s:1,c:"l4",m:"Hyundai / Kia",cod:"G4KK",l:null,d:"Motor de la familia Theta."},
+ {f:6,r:7,s:1,c:"l4",m:"Nissan",cod:"HR16DE",l:"1.6 L",d:"Motor completo con cableado y múltiple de admisión."},
+ {f:2,r:3,s:2,c:"l4",m:"Nissan",cod:"MRA8DE",l:"1.8 L",d:"Motor completo con múltiple de admisión."},
+ {f:5,r:6,s:2,c:"l4",m:"Nissan",cod:"QR25DE",l:"2.5 L",d:"Motor completo con múltiple de admisión."},
+ {f:9,r:10,s:6,c:"l4",m:"Toyota",cod:"2ZR-FE",l:"1.8 L",d:"Motor completo con volante y clutch instalados."},
+ {f:3,r:4,s:3,c:"l4",m:"Toyota",cod:"2AZ-FE",l:"2.4 L",d:"Motor sin múltiple de admisión, listo para armar."}
 ];
 motores.forEach(m=>m.t=m.m+" "+m.cod);
 const FOTOS=["productos/motor-01.jpg", "productos/motor-02.jpg", "productos/motor-03.jpg", "productos/motor-04.jpg", "productos/motor-05.jpg", "productos/motor-06.jpg", "productos/motor-07.jpg", "productos/motor-08.jpg", "productos/motor-09.jpg", "productos/motor-10.jpg"];
 const cont=document.getElementById("prod"),visor=document.getElementById("visor");
+document.getElementById("resumen").innerHTML="<b>"+motores.reduce((a,m)=>a+m.s,0)+" motores</b> en stock · "+motores.length+" modelos";
 const GRUPOS=[["v6","Motores V6"],["l4","Motores 4 cilindros en línea"]];
-const tarjeta=(m,i)=>{const r=String(m.f+1).padStart(2,"0");return `<article class="card">
- <button type="button" class="foto" data-i="${i}" aria-label="Ver fotos del ${m.t}"><img src="${FOTOS[m.f]}" alt="${m.t}, varias vistas" loading="lazy" width="820" height="1025"></button>
+const tarjeta=(m,i)=>{const r=String(m.r).padStart(2,"0");return `<article class="card">
+ ${m.f===null?`<div class="foto sin"><svg viewBox="0 0 100 80" aria-hidden="true"><rect x="18" y="24" width="62" height="38" fill="none" stroke="currentColor" stroke-width="3"/><rect x="28" y="12" width="42" height="12" fill="none" stroke="currentColor" stroke-width="3"/><path d="M8 36h10M8 50h10M80 43h12" stroke="currentColor" stroke-width="3"/></svg><span>Foto próximamente</span></div>`:`<button type="button" class="foto" data-i="${i}" aria-label="Ver fotos del ${m.t}"><img src="${FOTOS[m.f]}" alt="${m.t}, varias vistas" loading="lazy" width="820" height="1025"></button>`}
  <div class="cuerpo"><div class="ref"><span>${m.m}</span><span>Ref. ${r}</span></div><h3>${m.cod}</h3>
  <div class="datos"><span>${m.c==="v6"?"V6":"4 cilindros"}</span>${m.l?`<span>${m.l}</span>`:""}<span>Gasolina</span></div><p>${m.d}</p>
+ <span class="stock">${m.s} ${m.s===1?"disponible":"disponibles"}</span>
  <button type="button" class="consulta" data-contacto data-prod="${i}">Consultar precio</button></div></article>`};
 cont.innerHTML=GRUPOS.map(([c,tit])=>{const lst=motores.map((m,i)=>[m,i]).filter(([m])=>m.c===c);
  return `<div class="grupo" data-c="${c}"><h3 class="g-tit">${tit} <span>${lst.length}</span></h3><div class="prod">${lst.map(([m,i])=>tarjeta(m,i)).join("")}</div></div>`}).join("");
@@ -376,7 +387,7 @@ const PROBLEMAS=["Falla mecánica","Fugas","Overhaul","Garantías"];
 const wa=(t,n)=>"https://api.whatsapp.com/send?phone="+(n||vendedor())+"&text="+encodeURIComponent(t);
 const enPC=matchMedia("(hover:hover) and (pointer:fine)").matches;
 function base(){let t="¡Hola! 👋 Les escribo desde la página web de Reconstructora de Motores Del Sur II.";
- if(prodSel!==null)t+=" Me interesa el motor *"+motores[prodSel].t+"*"+(motores[prodSel].l?" ("+motores[prodSel].l+")":"")+", Ref. "+String(motores[prodSel].f+1).padStart(2,"0")+".";return t}
+ if(prodSel!==null)t+=" Me interesa el motor *"+motores[prodSel].t+"*"+(motores[prodSel].l?" ("+motores[prodSel].l+")":"")+", Ref. "+String(motores[prodSel].r).padStart(2,"0")+".";return t}
 function abierto(){const h=+new Intl.DateTimeFormat("en-US",{timeZone:"America/Guatemala",hour:"numeric",hourCycle:"h23"}).format(new Date());return h>=7&&h<17}
 const FUERA=()=>abierto()?"":" Sé que en este momento están fuera de horario, quedo atento a su respuesta. 🙏";
 function paso(n){chat.querySelectorAll(".paso-chat").forEach(p=>p.hidden=p.dataset.p!=n)}
@@ -393,7 +404,7 @@ const vi=document.getElementById("visor-inst"),fotosI=[...vi.querySelectorAll("i
 let act=0,tim=null,pausa=false;const quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
 function verI(n){act=(n+fotosI.length)%fotosI.length;fotosI.forEach((f,i)=>f.classList.toggle("on",i===act));
  vi.classList.remove("corre");void vi.offsetWidth;if(!quieto&&!pausa)vi.classList.add("corre");prog()}
-function prog(){clearTimeout(tim);if(quieto||pausa)return;tim=setTimeout(()=>verI(act+1),5500)}
+function prog(){clearTimeout(tim);if(quieto||pausa)return;tim=setTimeout(()=>verI(act+1),1500)}
 vi.addEventListener("mouseenter",()=>{pausa=true;clearTimeout(tim);vi.classList.remove("corre")});
 vi.addEventListener("mouseleave",()=>{pausa=false;verI(act)});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)clearTimeout(tim);else prog()});
