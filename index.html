@@ -356,7 +356,7 @@ document.getElementById("filtros").addEventListener("click",e=>{const b=e.target
  document.querySelectorAll("#filtros button").forEach(x=>x.setAttribute("aria-pressed",x===b));
  const f=b.dataset.f;cont.querySelectorAll(".grupo").forEach(g=>g.hidden=!(f==="todos"||g.dataset.c===f));});
 
-const VENDEDORES=["50253369812","50246661983","50280000385","50224568891"],GARANTIAS="50230042741";
+const VENDEDORES=["50253369812","50246661983","50280000385","50245648891"],GARANTIAS="50230042741";
 const chat=document.getElementById("chat");let prodSel=null;
 let turno=null;
 function siguiente(){let i=null;try{i=localStorage.getItem("rdm_turno")}catch(e){}
