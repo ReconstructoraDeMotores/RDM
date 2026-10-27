@@ -120,13 +120,34 @@ dialog button{font:600 14px var(--body);background:transparent;color:#EEF1F8;bor
 @media (max-width:760px){.contacto{grid-template-columns:1fr;gap:28px}}
 
 [hidden]{display:none!important}
-/* video del taller */
-.taller{display:grid;grid-template-columns:1fr minmax(0,340px);gap:32px 56px;align-items:center}
-.taller .txt{min-width:0}
-.taller .txt p{color:var(--mute);max-width:46ch;margin:0 0 22px}
-.taller .marco{aspect-ratio:540/896;max-width:100%;width:100%;background:var(--photo);overflow:hidden;border-radius:6px;border-bottom:4px solid var(--red)}
-.taller video{display:block;width:100%;height:100%;object-fit:cover}
-@media (max-width:760px){.taller{grid-template-columns:1fr}.taller .marco{max-width:320px;justify-self:center}}
+/* instalaciones */
+.inst{display:grid;grid-template-columns:minmax(0,480px) 1fr;gap:32px 56px;align-items:center}
+.visor-inst{position:relative;aspect-ratio:4/5;max-width:100%;width:100%;overflow:hidden;background:var(--photo)}
+.visor-inst img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease}
+.visor-inst img.on{opacity:1}
+.visor-inst .barra-p{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.25)}
+.visor-inst .barra-p i{display:block;height:100%;width:0;background:var(--red)}
+.visor-inst.corre .barra-p i{animation:llena 5.5s linear forwards}
+@keyframes llena{to{width:100%}}
+.lista-inst{list-style:none;margin:0;padding:0;border-top:2px solid var(--fg);min-width:0}
+.lista-inst button{display:flex;gap:16px;align-items:baseline;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:14px 0;cursor:pointer;color:var(--mute);font:500 17px var(--body)}
+.lista-inst button span{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--mute);min-width:3ch}
+.lista-inst button:hover{color:var(--fg)}
+.lista-inst button[aria-current="true"]{color:var(--fg);font-weight:600}
+.lista-inst button[aria-current="true"] span{color:var(--red)}
+@media (max-width:760px){.inst{grid-template-columns:1fr}.visor-inst{max-width:440px}}
+@media (prefers-reduced-motion:reduce){.visor-inst img{transition:none}.visor-inst.corre .barra-p i{animation:none}}
+/* filosofia */
+#filosofia{padding-block:88px}
+.frase{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:clamp(34px,6vw,72px);line-height:.98;text-transform:uppercase;margin:0 0 20px;max-width:16ch;text-wrap:balance}
+.frase em{font-style:normal;color:var(--blue)}
+.intro-f{color:var(--mute);max-width:56ch;margin:0 0 56px;font-size:18px}
+.valores{display:grid;grid-template-columns:repeat(4,1fr);gap:36px 40px}
+.valores div{min-width:0;border-top:3px solid var(--red);padding-top:18px}
+.valores h3{font-family:var(--display);font-stretch:110%;font-size:20px;font-weight:800;margin:0 0 8px;text-transform:uppercase}
+.valores p{margin:0;color:var(--mute);font-size:15.5px}
+@media (max-width:900px){.valores{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.valores{grid-template-columns:1fr}}
 /* contacto guiado */
 .nav-cta{font:600 14px var(--body);background:var(--red);color:#fff;border:0;padding:8px 14px;cursor:pointer}
 .nav-cta:hover{background:var(--blue)}
@@ -176,7 +197,8 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
     <ul>
       <li><a href="#servicios">Servicios</a></li>
       <li><a href="#productos">Productos</a></li>
-      <li><a href="#proceso">Proceso</a></li>
+      <li><a href="#instalaciones">Instalaciones</a></li>
+      <li><a href="#filosofia">Nosotros</a></li>
       <li><a href="#contacto">Ubicación</a></li>
       <li><button type="button" class="nav-cta" data-contacto>Contáctenos</button></li>
     </ul>
@@ -209,14 +231,27 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
     </div>
   </section>
 
-  <section id="taller">
-    <div class="taller">
-      <div class="txt">
-        <h2>Nuestro taller</h2>
-        <p>Un equipo que conoce cada motor por dentro. Así se vive un día de trabajo en nuestro taller de Calzada Aguilar Batres, zona 11.</p>
-        <button type="button" class="btn primario" style="cursor:pointer;font-family:var(--body)" data-contacto>Contáctenos</button>
+  <section id="instalaciones">
+    <h2>Nuestras instalaciones</h2>
+    <p class="sub">Un taller amplio y ordenado, con área techada, bancos de armado y bodega propia de repuestos.</p>
+    <div class="inst">
+      <div class="visor-inst corre" id="visor-inst" aria-live="polite">
+        <img src="instalaciones/inst-01.jpg" alt="Nuestro edificio sobre la Calzada Aguilar Batres" width="960" height="1200" class="on">
+        <img src="instalaciones/inst-02.jpg" alt="Área de recepción de vehículos" width="960" height="1200" loading="lazy">
+        <img src="instalaciones/inst-03.jpg" alt="Armado de motores en banco" width="960" height="1200" loading="lazy">
+        <img src="instalaciones/inst-04.jpg" alt="Área de motores" width="960" height="1200" loading="lazy">
+        <img src="instalaciones/inst-05.jpg" alt="Área de trabajo techada" width="960" height="1200" loading="lazy">
+        <img src="instalaciones/inst-06.jpg" alt="Bodega de repuestos y herramientas" width="960" height="1200" loading="lazy">
+        <div class="barra-p"><i></i></div>
       </div>
-      <div class="marco"><video src="video/taller.mp4" poster="video/poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Video del equipo trabajando en el taller"></video></div>
+      <ol class="lista-inst" id="lista-inst">
+        <li><button type="button" data-s="0" aria-current="true"><span>01</span>Nuestro edificio sobre la Calzada Aguilar Batres</button></li>
+        <li><button type="button" data-s="1"><span>02</span>Área de recepción de vehículos</button></li>
+        <li><button type="button" data-s="2"><span>03</span>Armado de motores en banco</button></li>
+        <li><button type="button" data-s="3"><span>04</span>Área de motores</button></li>
+        <li><button type="button" data-s="4"><span>05</span>Área de trabajo techada</button></li>
+        <li><button type="button" data-s="5"><span>06</span>Bodega de repuestos y herramientas</button></li>
+      </ol>
     </div>
   </section>
 
@@ -229,6 +264,18 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
       <button type="button" data-f="l4" aria-pressed="false">4 cilindros</button>
     </div>
     <div class="prod" id="prod"></div>
+  </section>
+
+  <section id="filosofia">
+    <p class="eyebrow">Nuestra filosofía</p>
+    <p class="frase">Un motor no se adivina. <em>Se mide.</em></p>
+    <p class="intro-f">Creemos que un buen trabajo empieza por entender el problema. Por eso revisamos, medimos y explicamos antes de tocar una sola pieza, y entregamos cada motor como si fuera para nuestro propio vehículo.</p>
+    <div class="valores">
+      <div><h3>Precisión</h3><p>Cada pieza se mide contra la especificación del fabricante. Nada se arma a ojo.</p></div>
+      <div><h3>Honestidad</h3><p>Le decimos qué tiene su motor y cuánto cuesta antes de empezar. Si no conviene repararlo, también se lo decimos.</p></div>
+      <div><h3>Compromiso</h3><p>Trabajamos con repuestos de calidad y respaldamos lo que entregamos.</p></div>
+      <div><h3>Su tiempo</h3><p>Le damos una fecha de entrega clara y le avisamos de cada avance.</p></div>
+    </div>
   </section>
 
   <section id="proceso">
@@ -332,6 +379,17 @@ document.getElementById("chat-si").onclick=()=>paso(2);
 document.getElementById("chat-volver").onclick=()=>paso(1);
 document.getElementById("chat-x").onclick=()=>chat.close();
 chat.addEventListener("click",e=>{if(e.target===chat)chat.close();if(e.target.closest("a.op"))setTimeout(()=>chat.close(),300)});
+
+const vi=document.getElementById("visor-inst"),fotosI=[...vi.querySelectorAll("img")],botI=[...document.querySelectorAll("#lista-inst button")];
+let act=0,tim=null,pausa=false;const quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function verI(n){act=(n+fotosI.length)%fotosI.length;fotosI.forEach((f,i)=>f.classList.toggle("on",i===act));
+ botI.forEach((b,i)=>b.setAttribute("aria-current",i===act));vi.classList.remove("corre");void vi.offsetWidth;if(!quieto&&!pausa)vi.classList.add("corre");prog()}
+function prog(){clearTimeout(tim);if(quieto||pausa)return;tim=setTimeout(()=>verI(act+1),5500)}
+botI.forEach((b,i)=>b.onclick=()=>verI(i));
+vi.addEventListener("mouseenter",()=>{pausa=true;clearTimeout(tim);vi.classList.remove("corre")});
+vi.addEventListener("mouseleave",()=>{pausa=false;verI(act)});
+document.addEventListener("visibilitychange",()=>{if(document.hidden)clearTimeout(tim);else prog()});
+if(quieto)vi.classList.remove("corre");prog();
 </script>
 </body>
 </html>
