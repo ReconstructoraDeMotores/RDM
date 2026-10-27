@@ -81,6 +81,12 @@ h2{font-family:var(--display);font-stretch:110%;font-weight:800;font-size:clamp(
 .filtros button:hover{border-color:var(--blue)}
 .prod{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .card{border:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;min-width:0}
+.grupo+.grupo{margin-top:48px}
+.g-tit{font-family:var(--display);font-stretch:110%;font-size:22px;font-weight:800;text-transform:uppercase;margin:0 0 16px;padding-bottom:10px;border-bottom:2px solid var(--fg);display:flex;align-items:baseline;gap:10px}
+.g-tit span{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--red)}
+.datos{display:flex;flex-wrap:wrap;gap:6px}
+.datos span{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border:1px solid var(--line);color:var(--fg)}
+#prod.prodwrap{display:block}
 .card .foto{display:block;padding:0;border:0;cursor:zoom-in;aspect-ratio:4/5;max-width:100%;width:100%;background:var(--photo);overflow:hidden}
 .card .foto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
 .card .foto:hover img{transform:scale(1.03)}
@@ -252,9 +258,9 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
     <div class="filtros" id="filtros" aria-label="Filtrar motores">
       <button type="button" data-f="todos" aria-pressed="true">Todos</button>
       <button type="button" data-f="v6" aria-pressed="false">V6</button>
-      <button type="button" data-f="l4" aria-pressed="false">4 cilindros</button>
+      <button type="button" data-f="l4" aria-pressed="false">4 cilindros en línea</button>
     </div>
-    <div class="prod" id="prod"></div>
+    <div class="prodwrap" id="prod"></div>
   </section>
 
   <section id="proceso">
@@ -318,38 +324,43 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
 </dialog>
 <script>
 const motores=[
- {t:"Motor V6",c:"v6",d:"Motor V6 completo con múltiple de admisión y accesorios."},
- {t:"Honda R18A1",c:"l4",d:"Motor 1.8 L de 4 cilindros en línea, completo."},
- {t:"Motor 4 cilindros",c:"l4",d:"Motor completo con múltiple de admisión."},
- {t:"Motor 4 cilindros",c:"l4",d:"Motor sin múltiple de admisión, listo para armar."},
- {t:"Motor G4NH",c:"l4",d:"Motor 2.0 L de 4 cilindros en línea, completo."},
- {t:"Motor 4 cilindros",c:"l4",d:"Motor completo con múltiple de admisión."},
- {t:"Motor 4 cilindros",c:"l4",d:"Motor completo con cableado y múltiple."},
- {t:"Motor V6",c:"v6",d:"Motor V6 completo con accesorios."},
- {t:"Motor V6",c:"v6",d:"Motor V6 sin múltiple superior."},
- {t:"Motor 4 cilindros",c:"l4",d:"Motor con volante y clutch instalados."}
+ {f:0,c:"v6",m:"Hyundai / Kia",cod:"G6DJ",l:"3.8 L",d:"Motor V6 Lambda completo, con múltiple de admisión y accesorios."},
+ {f:7,c:"v6",m:"Nissan",cod:"VQ35DE",l:"3.5 L",d:"Motor V6 completo, con múltiple de admisión."},
+ {f:8,c:"v6",m:"Toyota",cod:"2GR-FE",l:"3.5 L",d:"Motor V6 sin múltiple superior, listo para armar."},
+ {f:1,c:"l4",m:"Honda",cod:"R18A1",l:"1.8 L",d:"Motor completo con múltiple de admisión y cuerpo de aceleración."},
+ {f:4,c:"l4",m:"Hyundai / Kia",cod:"G4NH",l:"2.0 L",d:"Motor Nu completo, con bobinas y múltiple de admisión."},
+ {f:6,c:"l4",m:"Nissan",cod:"HR16DE",l:"1.6 L",d:"Motor completo con cableado y múltiple de admisión."},
+ {f:5,c:"l4",m:"Nissan",cod:"MR20DE",l:"2.0 L",d:"Motor completo con múltiple de admisión."},
+ {f:2,c:"l4",m:"Nissan",cod:null,l:null,d:"Motor completo con múltiple de admisión."},
+ {f:3,c:"l4",m:"Toyota",cod:"2AZ-FE",l:"2.4 L",d:"Motor sin múltiple de admisión, listo para armar."},
+ {f:9,c:"l4",m:"Toyota",cod:null,l:null,d:"Motor completo con volante y clutch instalados."}
 ];
+motores.forEach(m=>m.t=m.m+" "+(m.cod||"4 cilindros"));
 const FOTOS=["productos/motor-01.jpg", "productos/motor-02.jpg", "productos/motor-03.jpg", "productos/motor-04.jpg", "productos/motor-05.jpg", "productos/motor-06.jpg", "productos/motor-07.jpg", "productos/motor-08.jpg", "productos/motor-09.jpg", "productos/motor-10.jpg"];
 const cont=document.getElementById("prod"),visor=document.getElementById("visor");
-cont.innerHTML=motores.map((m,i)=>{const r=String(i+1).padStart(2,"0");return `<article class="card" data-c="${m.c}">
- <button type="button" class="foto" data-i="${i}" aria-label="Ver fotos de ${m.t}, referencia ${r}"><img src="${FOTOS[i]}" alt="${m.t}, varias vistas" loading="lazy" width="820" height="1025"></button>
- <div class="cuerpo"><div class="ref"><span>Ref. ${r}</span><span>${m.c==="v6"?"V6":"4 cilindros"}</span></div><h3>${m.t}</h3><p>${m.d}</p>
- <button type="button" class="consulta" data-contacto data-prod="${i}">Consultar precio</button></div></article>`}).join("");
-cont.addEventListener("click",e=>{const b=e.target.closest(".foto");if(!b)return;const i=+b.dataset.i;
- document.getElementById("visor-img").src=FOTOS[i];document.getElementById("visor-img").alt=motores[i].t;
- document.getElementById("visor-t").textContent=motores[i].t+" · Ref. "+String(i+1).padStart(2,"0");
+const GRUPOS=[["v6","Motores V6"],["l4","Motores 4 cilindros en línea"]];
+const tarjeta=(m,i)=>{const r=String(m.f+1).padStart(2,"0");return `<article class="card">
+ <button type="button" class="foto" data-i="${i}" aria-label="Ver fotos del ${m.t}"><img src="${FOTOS[m.f]}" alt="${m.t}, varias vistas" loading="lazy" width="820" height="1025"></button>
+ <div class="cuerpo"><div class="ref"><span>${m.m}</span><span>Ref. ${r}</span></div><h3>${m.cod||"Por confirmar"}</h3>
+ <div class="datos"><span>${m.c==="v6"?"V6":"4 cilindros"}</span>${m.l?`<span>${m.l}</span>`:""}<span>Gasolina</span></div><p>${m.d}</p>
+ <button type="button" class="consulta" data-contacto data-prod="${i}">Consultar precio</button></div></article>`};
+cont.innerHTML=GRUPOS.map(([c,tit])=>{const lst=motores.map((m,i)=>[m,i]).filter(([m])=>m.c===c);
+ return `<div class="grupo" data-c="${c}"><h3 class="g-tit">${tit} <span>${lst.length}</span></h3><div class="prod">${lst.map(([m,i])=>tarjeta(m,i)).join("")}</div></div>`}).join("");
+cont.addEventListener("click",e=>{const b=e.target.closest(".foto");if(!b)return;const m=motores[+b.dataset.i];
+ document.getElementById("visor-img").src=FOTOS[m.f];document.getElementById("visor-img").alt=m.t;
+ document.getElementById("visor-t").textContent=m.t+(m.l?" · "+m.l:"");
  if(visor.showModal)visor.showModal();});
 document.getElementById("cerrar").onclick=()=>visor.close();
 visor.addEventListener("click",e=>{if(e.target===visor)visor.close()});
 document.getElementById("filtros").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
  document.querySelectorAll("#filtros button").forEach(x=>x.setAttribute("aria-pressed",x===b));
- const f=b.dataset.f;cont.querySelectorAll(".card").forEach(c=>c.hidden=!(f==="todos"||c.dataset.c===f));});
+ const f=b.dataset.f;cont.querySelectorAll(".grupo").forEach(g=>g.hidden=!(f==="todos"||g.dataset.c===f));});
 
 const WA="50233999363",chat=document.getElementById("chat");let prodSel=null;
 const PROBLEMAS=["Falla mecánica","Fugas","Overhaul","Garantías"];
 const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
 function base(){let t="¡Hola! 👋 Les escribo desde la página web de Reconstructora de Motores Del Sur II.";
- if(prodSel!==null)t+=" Me interesa el *"+motores[prodSel].t+"* (Ref. "+String(prodSel+1).padStart(2,"0")+").";return t}
+ if(prodSel!==null)t+=" Me interesa el motor *"+motores[prodSel].t+"*"+(motores[prodSel].l?" ("+motores[prodSel].l+")":"")+", Ref. "+String(motores[prodSel].f+1).padStart(2,"0")+".";return t}
 function abierto(){const h=+new Intl.DateTimeFormat("en-US",{timeZone:"America/Guatemala",hour:"numeric",hourCycle:"h23"}).format(new Date());return h>=7&&h<17}
 const FUERA=()=>abierto()?"":" Sé que en este momento están fuera de horario, quedo atento a su respuesta. 🙏";
 function paso(n){chat.querySelectorAll(".paso-chat").forEach(p=>p.hidden=p.dataset.p!=n)}
