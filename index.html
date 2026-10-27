@@ -119,6 +119,27 @@ dialog button{font:600 14px var(--body);background:transparent;color:#EEF1F8;bor
 .pend{color:var(--mute);font-weight:400;font-style:italic}
 @media (max-width:760px){.contacto{grid-template-columns:1fr;gap:28px}}
 
+/* contacto guiado */
+.nav-cta{font:600 14px var(--body);background:var(--red);color:#fff;border:0;padding:8px 14px;cursor:pointer}
+.nav-cta:hover{background:var(--blue)}
+.link-cta{font:600 17px var(--body);background:none;border:0;padding:0;color:var(--blue);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.btn-claro{font:600 15px var(--body);background:var(--bg);color:var(--blue);border:0;padding:12px 20px;cursor:pointer;margin-top:18px}
+.btn-claro:hover{color:var(--red)}
+.card .consulta{background:none;border:0;padding:8px 0 0;text-align:left;cursor:pointer;font-family:var(--body)}
+#chat{background:var(--bg);color:var(--fg);max-width:min(440px,92vw);width:100%;border:0;padding:0;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#chat::backdrop{background:rgba(5,6,8,.6)}
+#chat .cab{display:flex;justify-content:space-between;align-items:center;padding:12px 10px 12px 18px;background:var(--blue);color:var(--on-accent)}
+#chat .cab b{font-family:var(--display);font-stretch:110%;text-transform:uppercase;font-size:15px}
+#chat .x{background:none;border:0;color:var(--on-accent);font-size:24px;line-height:1;cursor:pointer;padding:4px 10px}
+#chat .paso-chat{padding:22px 18px 20px;display:flex;flex-direction:column;gap:10px}
+#chat .n{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--red);text-transform:uppercase}
+#chat .q{font-family:var(--display);font-stretch:110%;font-weight:800;font-size:22px;text-transform:uppercase;margin:0 0 6px;line-height:1.1}
+#chat .op{display:flex;justify-content:space-between;align-items:center;width:100%;font:600 16px var(--body);text-align:left;padding:14px 16px;border:1px solid var(--line);background:var(--bg);color:var(--fg);text-decoration:none;cursor:pointer}
+#chat .op:hover{border-color:var(--blue);color:var(--blue)}
+#chat .op::after{content:"\2192";color:var(--mute)}
+#chat .sino{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#chat .volver{align-self:flex-start;background:none;border:0;color:var(--mute);font:500 14px var(--body);padding:4px 0;cursor:pointer;text-decoration:underline}
+#chat .nota{font-size:13px;color:var(--mute);margin:4px 0 0}
 /* franja de lema */
 .lema{padding-block:0;background:var(--blue);color:var(--on-accent);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));border-top:0}
 .lema .in{max-width:1080px;margin:0 auto;padding-block:56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:1.4fr 1fr;gap:24px 48px;align-items:end}
@@ -148,7 +169,8 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
       <li><a href="#servicios">Servicios</a></li>
       <li><a href="#productos">Productos</a></li>
       <li><a href="#proceso">Proceso</a></li>
-      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="#contacto">Ubicación</a></li>
+      <li><button type="button" class="nav-cta" data-contacto>Contáctenos</button></li>
     </ul>
   </nav>
 
@@ -204,7 +226,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
   <section class="lema" aria-label="Nuestro compromiso">
     <div class="in">
       <p class="grande">Deje su motor en nuestras manos.<span>Nosotros le devolvemos la fuerza.</span></p>
-      <p class="chico">Su problema lo resolvemos aquí, con medición en cada pieza y el trabajo explicado de principio a fin.</p>
+      <div><p class="chico">Su problema lo resolvemos aquí, con medición en cada pieza y el trabajo explicado de principio a fin.</p><button type="button" class="btn-claro" data-contacto>Contáctenos</button></div>
     </div>
   </section>
 
@@ -218,8 +240,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
         <div class="botones" style="margin-top:0"><a class="btn primario" href="https://waze.com/ul?q=Calzada%20Aguilar%20Batres%208-28%20zona%2011%20Guatemala&amp;navigate=yes" target="_blank" rel="noopener">Ir con Waze</a><a class="btn sec" href="https://www.google.com/maps/search/?api=1&amp;query=Calzada+Aguilar+Batres+8-28+zona+11+Guatemala" target="_blank" rel="noopener">Ver en Google Maps</a></div>
       </div>
       <dl>
-        <dt>Teléfono</dt><dd class="pend">Por agregar</dd>
-        <dt>WhatsApp</dt><dd class="pend">Por agregar</dd>
+        <dt>WhatsApp</dt><dd><button type="button" class="link-cta" data-contacto>Escríbanos</button></dd>
         <dt>Horario</dt><dd class="pend">Por agregar</dd>
       </dl>
     </div>
@@ -233,6 +254,21 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
 </div>
 
 <dialog id="visor"><div class="barra"><span id="visor-t"></span><button type="button" id="cerrar">Cerrar</button></div><img id="visor-img" alt=""></dialog>
+<dialog id="chat" aria-labelledby="chat-t">
+  <div class="cab"><b id="chat-t">Contáctenos</b><button type="button" class="x" id="chat-x" aria-label="Cerrar">&times;</button></div>
+  <div class="paso-chat" data-p="1">
+    <span class="n">Pregunta 1 de 2</span>
+    <p class="q">¿Tiene algún problema con su motor?</p>
+    <div class="sino"><button type="button" class="op" id="chat-si">Sí</button><a class="op" id="chat-no" href="#" target="_blank" rel="noopener">No</a></div>
+    <p class="nota">Le atenderá un asesor por WhatsApp.</p>
+  </div>
+  <div class="paso-chat" data-p="2" hidden>
+    <span class="n">Pregunta 2 de 2</span>
+    <p class="q">¿Qué tipo de problema tiene?</p>
+    <div id="chat-ops" style="display:flex;flex-direction:column;gap:10px"></div>
+    <button type="button" class="volver" id="chat-volver">Volver</button>
+  </div>
+</dialog>
 <script>
 const motores=[
  {t:"Motor V6",c:"v6",d:"Motor V6 completo con múltiple de admisión y accesorios."},
@@ -251,7 +287,7 @@ const cont=document.getElementById("prod"),visor=document.getElementById("visor"
 cont.innerHTML=motores.map((m,i)=>{const r=String(i+1).padStart(2,"0");return `<article class="card" data-c="${m.c}">
  <button type="button" class="foto" data-i="${i}" aria-label="Ver fotos de ${m.t}, referencia ${r}"><img src="${FOTOS[i]}" alt="${m.t}, varias vistas" loading="lazy" width="820" height="1025"></button>
  <div class="cuerpo"><div class="ref"><span>Ref. ${r}</span><span>${m.c==="v6"?"V6":"4 cilindros"}</span></div><h3>${m.t}</h3><p>${m.d}</p>
- <a class="consulta" href="#contacto">Consultar precio</a></div></article>`}).join("");
+ <button type="button" class="consulta" data-contacto data-prod="${i}">Consultar precio</button></div></article>`}).join("");
 cont.addEventListener("click",e=>{const b=e.target.closest(".foto");if(!b)return;const i=+b.dataset.i;
  document.getElementById("visor-img").src=FOTOS[i];document.getElementById("visor-img").alt=motores[i].t;
  document.getElementById("visor-t").textContent=motores[i].t+" · Ref. "+String(i+1).padStart(2,"0");
@@ -261,6 +297,21 @@ visor.addEventListener("click",e=>{if(e.target===visor)visor.close()});
 document.getElementById("filtros").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
  document.querySelectorAll("#filtros button").forEach(x=>x.setAttribute("aria-pressed",x===b));
  const f=b.dataset.f;cont.querySelectorAll(".card").forEach(c=>c.hidden=!(f==="todos"||c.dataset.c===f));});
+
+const WA="50233999363",chat=document.getElementById("chat");let prodSel=null;
+const PROBLEMAS=["Falla mecánica","Fugas","Overhaul","Garantías"];
+const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+function base(){let t="Hola, les escribo desde la página web de Reconstructora de Motores Del Sur II.";
+ if(prodSel!==null)t+=" Me interesa el "+motores[prodSel].t+" (Ref. "+String(prodSel+1).padStart(2,"0")+").";return t}
+function paso(n){chat.querySelectorAll(".paso-chat").forEach(p=>p.hidden=p.dataset.p!=n)}
+function armar(){document.getElementById("chat-no").href=wa(base()+" Quisiera más información.");
+ document.getElementById("chat-ops").innerHTML=PROBLEMAS.map(p=>`<a class="op" target="_blank" rel="noopener" href="${wa(base()+" Tengo un problema con mi motor: "+p+".")}">${p}</a>`).join("")}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-contacto]");if(!b)return;e.preventDefault();
+ prodSel=b.dataset.prod!=null?+b.dataset.prod:null;armar();paso(1);if(chat.showModal)chat.showModal();});
+document.getElementById("chat-si").onclick=()=>paso(2);
+document.getElementById("chat-volver").onclick=()=>paso(1);
+document.getElementById("chat-x").onclick=()=>chat.close();
+chat.addEventListener("click",e=>{if(e.target===chat)chat.close();if(e.target.closest("a.op"))setTimeout(()=>chat.close(),300)});
 </script>
 </body>
 </html>
