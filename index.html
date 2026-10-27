@@ -120,34 +120,27 @@ dialog button{font:600 14px var(--body);background:transparent;color:#EEF1F8;bor
 @media (max-width:760px){.contacto{grid-template-columns:1fr;gap:28px}}
 
 [hidden]{display:none!important}
-/* instalaciones */
-.inst{display:grid;grid-template-columns:minmax(0,480px) 1fr;gap:32px 56px;align-items:center}
+/* nosotros: fotos + filosofia */
+.nos{display:grid;grid-template-columns:minmax(0,460px) 1fr;gap:40px 64px;align-items:center}
 .visor-inst{position:relative;aspect-ratio:4/5;max-width:100%;width:100%;overflow:hidden;background:var(--photo)}
-.visor-inst img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease}
+.visor-inst img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.4s ease}
 .visor-inst img.on{opacity:1}
 .visor-inst .barra-p{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.25)}
 .visor-inst .barra-p i{display:block;height:100%;width:0;background:var(--red)}
 .visor-inst.corre .barra-p i{animation:llena 5.5s linear forwards}
 @keyframes llena{to{width:100%}}
-.lista-inst{list-style:none;margin:0;padding:0;border-top:2px solid var(--fg);min-width:0}
-.lista-inst button{display:flex;gap:16px;align-items:baseline;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:14px 0;cursor:pointer;color:var(--mute);font:500 17px var(--body)}
-.lista-inst button span{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--mute);min-width:3ch}
-.lista-inst button:hover{color:var(--fg)}
-.lista-inst button[aria-current="true"]{color:var(--fg);font-weight:600}
-.lista-inst button[aria-current="true"] span{color:var(--red)}
-@media (max-width:760px){.inst{grid-template-columns:1fr}.visor-inst{max-width:440px}}
-@media (prefers-reduced-motion:reduce){.visor-inst img{transition:none}.visor-inst.corre .barra-p i{animation:none}}
-/* filosofia */
-#filosofia{padding-block:88px}
-.frase{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:clamp(34px,6vw,72px);line-height:.98;text-transform:uppercase;margin:0 0 20px;max-width:16ch;text-wrap:balance}
+.filo{min-width:0}
+.frase{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:clamp(32px,4.4vw,56px);line-height:.98;text-transform:uppercase;margin:0 0 18px;text-wrap:balance}
 .frase em{font-style:normal;color:var(--blue)}
-.intro-f{color:var(--mute);max-width:56ch;margin:0 0 56px;font-size:18px}
-.valores{display:grid;grid-template-columns:repeat(4,1fr);gap:36px 40px}
-.valores div{min-width:0;border-top:3px solid var(--red);padding-top:18px}
-.valores h3{font-family:var(--display);font-stretch:110%;font-size:20px;font-weight:800;margin:0 0 8px;text-transform:uppercase}
-.valores p{margin:0;color:var(--mute);font-size:15.5px}
-@media (max-width:900px){.valores{grid-template-columns:1fr 1fr}}
-@media (max-width:480px){.valores{grid-template-columns:1fr}}
+.intro-f{color:var(--mute);max-width:52ch;margin:0 0 36px;font-size:17px}
+.valores{display:grid;grid-template-columns:1fr 1fr;gap:28px 36px}
+.valores div{min-width:0;border-top:3px solid var(--red);padding-top:14px}
+.valores h3{font-family:var(--display);font-stretch:110%;font-size:18px;font-weight:800;margin:0 0 6px;text-transform:uppercase}
+.valores p{margin:0;color:var(--mute);font-size:15px}
+@media (max-width:820px){.nos{grid-template-columns:1fr}.visor-inst{max-width:440px}}
+@media (max-width:420px){.valores{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.visor-inst img{transition:none}.visor-inst.corre .barra-p i{animation:none}}
+#chat .aviso{margin:0;padding:12px 14px;background:var(--soft);border-left:3px solid var(--blue);font-size:14.5px;line-height:1.5}
 /* contacto guiado */
 .nav-cta{font:600 14px var(--body);background:var(--red);color:#fff;border:0;padding:8px 14px;cursor:pointer}
 .nav-cta:hover{background:var(--blue)}
@@ -197,8 +190,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
     <ul>
       <li><a href="#servicios">Servicios</a></li>
       <li><a href="#productos">Productos</a></li>
-      <li><a href="#instalaciones">Instalaciones</a></li>
-      <li><a href="#filosofia">Nosotros</a></li>
+      <li><a href="#instalaciones">Nosotros</a></li>
       <li><a href="#contacto">Ubicación</a></li>
       <li><button type="button" class="nav-cta" data-contacto>Contáctenos</button></li>
     </ul>
@@ -232,26 +224,25 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
   </section>
 
   <section id="instalaciones">
-    <h2>Nuestras instalaciones</h2>
-    <p class="sub">Un taller amplio y ordenado, con área techada, bancos de armado y bodega propia de repuestos.</p>
-    <div class="inst">
-      <div class="visor-inst corre" id="visor-inst" aria-live="polite">
-        <img src="instalaciones/inst-01.jpg" alt="Nuestro edificio sobre la Calzada Aguilar Batres" width="960" height="1200" class="on">
-        <img src="instalaciones/inst-02.jpg" alt="Área de recepción de vehículos" width="960" height="1200" loading="lazy">
-        <img src="instalaciones/inst-03.jpg" alt="Armado de motores en banco" width="960" height="1200" loading="lazy">
-        <img src="instalaciones/inst-04.jpg" alt="Área de motores" width="960" height="1200" loading="lazy">
-        <img src="instalaciones/inst-05.jpg" alt="Área de trabajo techada" width="960" height="1200" loading="lazy">
-        <img src="instalaciones/inst-06.jpg" alt="Bodega de repuestos y herramientas" width="960" height="1200" loading="lazy">
+    <div class="nos">
+      <div class="visor-inst corre" id="visor-inst" aria-label="Fotos de nuestras instalaciones">
+        <img class="on" src="instalaciones/inst-03.jpg" alt="Instalaciones del taller" width="960" height="1200">
+        <img loading="lazy" src="instalaciones/inst-04.jpg" alt="Instalaciones del taller" width="960" height="1200">
+        <img loading="lazy" src="instalaciones/inst-05.jpg" alt="Instalaciones del taller" width="960" height="1200">
+        <img loading="lazy" src="instalaciones/inst-06.jpg" alt="Instalaciones del taller" width="960" height="1200">
         <div class="barra-p"><i></i></div>
       </div>
-      <ol class="lista-inst" id="lista-inst">
-        <li><button type="button" data-s="0" aria-current="true"><span>01</span>Nuestro edificio sobre la Calzada Aguilar Batres</button></li>
-        <li><button type="button" data-s="1"><span>02</span>Área de recepción de vehículos</button></li>
-        <li><button type="button" data-s="2"><span>03</span>Armado de motores en banco</button></li>
-        <li><button type="button" data-s="3"><span>04</span>Área de motores</button></li>
-        <li><button type="button" data-s="4"><span>05</span>Área de trabajo techada</button></li>
-        <li><button type="button" data-s="5"><span>06</span>Bodega de repuestos y herramientas</button></li>
-      </ol>
+      <div class="filo">
+        <p class="eyebrow">Nuestra filosofía</p>
+        <h2 class="frase">Un motor no se adivina. <em>Se mide.</em></h2>
+        <p class="intro-f">Creemos que un buen trabajo empieza por entender el problema. Por eso revisamos, medimos y explicamos antes de tocar una sola pieza, y entregamos cada motor como si fuera para nuestro propio vehículo.</p>
+        <div class="valores">
+          <div><h3>Precisión</h3><p>Cada pieza se mide contra la especificación del fabricante. Nada se arma a ojo.</p></div>
+          <div><h3>Honestidad</h3><p>Le decimos qué tiene su motor y cuánto cuesta antes de empezar. Si no conviene repararlo, también se lo decimos.</p></div>
+          <div><h3>Compromiso</h3><p>Trabajamos con repuestos de calidad y respaldamos lo que entregamos.</p></div>
+          <div><h3>Su tiempo</h3><p>Le damos una fecha de entrega clara y le avisamos de cada avance.</p></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -264,18 +255,6 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
       <button type="button" data-f="l4" aria-pressed="false">4 cilindros</button>
     </div>
     <div class="prod" id="prod"></div>
-  </section>
-
-  <section id="filosofia">
-    <p class="eyebrow">Nuestra filosofía</p>
-    <p class="frase">Un motor no se adivina. <em>Se mide.</em></p>
-    <p class="intro-f">Creemos que un buen trabajo empieza por entender el problema. Por eso revisamos, medimos y explicamos antes de tocar una sola pieza, y entregamos cada motor como si fuera para nuestro propio vehículo.</p>
-    <div class="valores">
-      <div><h3>Precisión</h3><p>Cada pieza se mide contra la especificación del fabricante. Nada se arma a ojo.</p></div>
-      <div><h3>Honestidad</h3><p>Le decimos qué tiene su motor y cuánto cuesta antes de empezar. Si no conviene repararlo, también se lo decimos.</p></div>
-      <div><h3>Compromiso</h3><p>Trabajamos con repuestos de calidad y respaldamos lo que entregamos.</p></div>
-      <div><h3>Su tiempo</h3><p>Le damos una fecha de entrega clara y le avisamos de cada avance.</p></div>
-    </div>
   </section>
 
   <section id="proceso">
@@ -307,7 +286,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
       </div>
       <dl>
         <dt>WhatsApp</dt><dd><button type="button" class="link-cta" data-contacto>Escríbanos</button></dd>
-        <dt>Horario</dt><dd class="pend">Por agregar</dd>
+        <dt>Horario</dt><dd>7:00 a. m. a 5:00 p. m.</dd>
       </dl>
     </div>
     <div class="mapa"><iframe title="Mapa de Reconstructora de Motores Del Sur II" src="https://www.google.com/maps?q=14.6088854,-90.5406423&amp;z=17&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
@@ -323,6 +302,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
 <dialog id="chat" aria-labelledby="chat-t">
   <div class="cab"><b id="chat-t">Contáctenos</b><button type="button" class="x" id="chat-x" aria-label="Cerrar">&times;</button></div>
   <div class="paso-chat" data-p="1">
+    <p class="aviso" id="chat-aviso" hidden>🌙 En este momento estamos fuera de nuestro horario de atención (7:00 a. m. a 5:00 p. m.). Con gusto puede dejarnos su mensaje: lo recibiremos y le responderemos lo antes posible. ¡Gracias por su paciencia!</p>
     <span class="n">Pregunta 1 de 2</span>
     <p class="q">¿Tiene algún problema con su motor?</p>
     <div class="sino"><button type="button" class="op" id="chat-si">Sí</button><a class="op" id="chat-no" href="#" target="_blank" rel="noopener">No</a></div>
@@ -370,22 +350,23 @@ const PROBLEMAS=["Falla mecánica","Fugas","Overhaul","Garantías"];
 const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
 function base(){let t="¡Hola! 👋 Les escribo desde la página web de Reconstructora de Motores Del Sur II.";
  if(prodSel!==null)t+=" Me interesa el *"+motores[prodSel].t+"* (Ref. "+String(prodSel+1).padStart(2,"0")+").";return t}
+function abierto(){const h=+new Intl.DateTimeFormat("en-US",{timeZone:"America/Guatemala",hour:"numeric",hourCycle:"h23"}).format(new Date());return h>=7&&h<17}
+const FUERA=()=>abierto()?"":" Sé que en este momento están fuera de horario, quedo atento a su respuesta. 🙏";
 function paso(n){chat.querySelectorAll(".paso-chat").forEach(p=>p.hidden=p.dataset.p!=n)}
-function armar(){document.getElementById("chat-no").href=wa(base()+" Me gustaría recibir más información sobre sus servicios y motores. ¡Muchas gracias! 😊");
- document.getElementById("chat-ops").innerHTML=PROBLEMAS.map(p=>`<a class="op" target="_blank" rel="noopener" href="${wa(base()+" Tengo un problema con mi motor: *"+p+"*. ¿Me pueden ayudar a revisarlo? ¡Muchas gracias! 🔧")}">${p}</a>`).join("")}
+function armar(){document.getElementById("chat-no").href=wa(base()+" Me gustaría recibir más información sobre sus servicios y motores. ¡Muchas gracias! 😊"+FUERA());
+ document.getElementById("chat-ops").innerHTML=PROBLEMAS.map(p=>`<a class="op" target="_blank" rel="noopener" href="${wa(base()+" Tengo un problema con mi motor: *"+p+"*. ¿Me pueden ayudar a revisarlo? ¡Muchas gracias! 🔧"+FUERA())}">${p}</a>`).join("")}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-contacto]");if(!b)return;e.preventDefault();
- prodSel=b.dataset.prod!=null?+b.dataset.prod:null;armar();paso(1);if(chat.showModal)chat.showModal();});
+ prodSel=b.dataset.prod!=null?+b.dataset.prod:null;document.getElementById("chat-aviso").hidden=abierto();armar();paso(1);if(chat.showModal)chat.showModal();});
 document.getElementById("chat-si").onclick=()=>paso(2);
 document.getElementById("chat-volver").onclick=()=>paso(1);
 document.getElementById("chat-x").onclick=()=>chat.close();
 chat.addEventListener("click",e=>{if(e.target===chat)chat.close();if(e.target.closest("a.op"))setTimeout(()=>chat.close(),300)});
 
-const vi=document.getElementById("visor-inst"),fotosI=[...vi.querySelectorAll("img")],botI=[...document.querySelectorAll("#lista-inst button")];
+const vi=document.getElementById("visor-inst"),fotosI=[...vi.querySelectorAll("img")];
 let act=0,tim=null,pausa=false;const quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
 function verI(n){act=(n+fotosI.length)%fotosI.length;fotosI.forEach((f,i)=>f.classList.toggle("on",i===act));
- botI.forEach((b,i)=>b.setAttribute("aria-current",i===act));vi.classList.remove("corre");void vi.offsetWidth;if(!quieto&&!pausa)vi.classList.add("corre");prog()}
+ vi.classList.remove("corre");void vi.offsetWidth;if(!quieto&&!pausa)vi.classList.add("corre");prog()}
 function prog(){clearTimeout(tim);if(quieto||pausa)return;tim=setTimeout(()=>verI(act+1),5500)}
-botI.forEach((b,i)=>b.onclick=()=>verI(i));
 vi.addEventListener("mouseenter",()=>{pausa=true;clearTimeout(tim);vi.classList.remove("corre")});
 vi.addEventListener("mouseleave",()=>{pausa=false;verI(act)});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)clearTimeout(tim);else prog()});
