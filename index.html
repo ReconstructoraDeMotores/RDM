@@ -163,7 +163,7 @@ dialog button{font:600 14px var(--body);background:transparent;color:#EEF1F8;bor
 @media (max-width:820px){.nos{grid-template-columns:1fr}.visor-inst{max-width:440px}}
 @media (max-width:420px){.valores{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.visor-inst img{transition:none}.visor-inst.corre .barra-p i{animation:none}}
-#chat .aviso{margin:0;padding:12px 14px;background:var(--soft);border-left:3px solid var(--blue);font-size:14.5px;line-height:1.5}
+#chat .aviso{margin:16px 18px 0;padding:12px 14px;background:var(--soft);border-left:3px solid var(--blue);font-size:14.5px;line-height:1.5}
 /* logo en modo oscuro: contorno suave en vez de halo */
 :root[data-theme="dark"]{--halo:transparent}
 :root[data-theme="dark"] .logo-hero img,:root[data-theme="dark"] .marca img{filter:drop-shadow(0 0 1px rgba(255,255,255,.55)) drop-shadow(0 0 22px rgba(120,150,255,.28))}
@@ -321,7 +321,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
   </section>
 
   <footer>
-    <span>© 2026 Reconstructora de Motores Del Sur II · <small>v27.10-1055</small></span>
+    <span>© 2026 Reconstructora de Motores Del Sur II · <small>v27.10-1100</small></span>
     <span>Calzada Aguilar Batres 8-28, zona 11, Guatemala</span>
   </footer>
 </div>
@@ -329,11 +329,11 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
 <dialog id="visor"><div class="barra"><span id="visor-t"></span><button type="button" id="cerrar">Cerrar</button></div><img id="visor-img" alt=""></dialog>
 <dialog id="chat" aria-labelledby="chat-t">
   <div class="cab"><b id="chat-t">Contáctenos</b><button type="button" class="x" id="chat-x" aria-label="Cerrar">&times;</button></div>
+  <p class="aviso" id="chat-aviso" hidden>🌙 En este momento estamos fuera de nuestro horario de atención (7:00 a. m. a 5:00 p. m.). Con gusto puede dejarnos su mensaje: lo recibiremos y le responderemos lo antes posible. ¡Gracias por su paciencia!</p>
   <div class="paso-chat" data-p="1">
-    <p class="aviso" id="chat-aviso" hidden>🌙 En este momento estamos fuera de nuestro horario de atención (7:00 a. m. a 5:00 p. m.). Con gusto puede dejarnos su mensaje: lo recibiremos y le responderemos lo antes posible. ¡Gracias por su paciencia!</p>
     <span class="n">Pregunta 1 de 2</span>
     <p class="q">¿Tiene algún problema con su motor?</p>
-    <div class="sino"><button type="button" class="op" id="chat-si">Sí</button><a class="op" id="chat-no" href="#" rel="noopener">No</a></div>
+    <div class="sino"><button type="button" class="op" id="chat-si">Sí</button><a class="op" id="chat-no" href="#" data-tipo="venta" rel="noopener">No</a></div>
     <p class="nota">¡Un asesor le atenderá con gusto por WhatsApp!</p>
   </div>
   <div class="paso-chat" data-p="2" hidden>
@@ -342,6 +342,12 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
     <p class="nota" style="margin:-4px 0 4px">Tranquilo, tiene solución. Elija una opción:</p>
     <div id="chat-ops" style="display:flex;flex-direction:column;gap:10px"></div>
     <button type="button" class="volver" id="chat-volver">Volver</button>
+  </div>
+  <div class="paso-chat" data-p="prod" hidden>
+    <span class="n" id="chat-prod-n"></span>
+    <p class="q">¿Qué desea consultar?</p>
+    <div id="chat-prod-ops" style="display:flex;flex-direction:column;gap:10px"></div>
+    <p class="nota">¡Un asesor le atenderá con gusto por WhatsApp!</p>
   </div>
 </dialog>
 <script>
@@ -383,28 +389,41 @@ document.getElementById("filtros").addEventListener("click",e=>{const b=e.target
  const f=b.dataset.f;cont.querySelectorAll(".grupo").forEach(g=>g.hidden=!(f==="todos"||g.dataset.c===f));});
 
 const VENDEDORES=["50253369812","50246661983","50280000385","50245648891"],GARANTIAS="50230042741";
+const CONTADOR="https://abacus.jasoncameron.dev/hit/rdm-delsur2/turno-vendedor";
 const chat=document.getElementById("chat");let prodSel=null;
-let turno=null;
-function siguiente(){let i=null;try{i=localStorage.getItem("rdm_turno")}catch(e){}
- i=(i===null||isNaN(+i))?Math.floor(Math.random()*VENDEDORES.length):(+i+1)%VENDEDORES.length;
- try{localStorage.setItem("rdm_turno",i)}catch(e){}turno=VENDEDORES[i]}
-function vendedor(){if(!turno)siguiente();return turno}
+function turnoLocal(){let i=null;try{i=localStorage.getItem("rdm_turno_local")}catch(e){}
+ i=(i===null||isNaN(+i))?0:(+i+1)%VENDEDORES.length;try{localStorage.setItem("rdm_turno_local",i)}catch(e){}return VENDEDORES[i]}
+async function turnoGlobal(){const c=new AbortController(),t=setTimeout(()=>c.abort(),2500);
+ try{const r=await fetch(CONTADOR,{signal:c.signal,cache:"no-store"});const j=await r.json();clearTimeout(t);
+  if(typeof j.value==="number")return VENDEDORES[(j.value-1)%VENDEDORES.length]}catch(e){}
+ clearTimeout(t);return turnoLocal()}
 const PROBLEMAS=["Falla mecánica","Fugas","Overhaul","Garantías"];
-const wa=(t,n)=>"https://api.whatsapp.com/send?phone="+(n||vendedor())+"&text="+encodeURIComponent(t);
+const waURL=(t,n)=>"https://api.whatsapp.com/send?phone="+n+"&text="+encodeURIComponent(t);
 const enPC=matchMedia("(hover:hover) and (pointer:fine)").matches;
-function base(){let t="¡Hola! 👋 Les escribo desde la página web de Reconstructora de Motores Del Sur II.";
- if(prodSel!==null)t+=" Me interesa el motor *"+motores[prodSel].t+"*"+(motores[prodSel].l?" ("+motores[prodSel].l+")":"")+", Ref. "+String(motores[prodSel].r).padStart(2,"0")+".";return t}
+const HOLA="¡Hola! 👋 Les escribo desde la página web de Reconstructora de Motores Del Sur II.";
+function nomProd(m){return "*"+m.t+"*"+(m.l?" ("+m.l+")":"")+", Ref. "+String(m.r).padStart(2,"0")}
 function abierto(){const h=+new Intl.DateTimeFormat("en-US",{timeZone:"America/Guatemala",hour:"numeric",hourCycle:"h23"}).format(new Date());return h>=7&&h<17}
 const FUERA=()=>abierto()?"":" Sé que en este momento están fuera de horario, quedo atento a su respuesta. 🙏";
 function paso(n){chat.querySelectorAll(".paso-chat").forEach(p=>p.hidden=p.dataset.p!=n)}
-function armar(){chat.querySelectorAll("a.op").forEach(a=>{if(enPC)a.target="_blank";else a.removeAttribute("target")});document.getElementById("chat-no").href=wa(base()+" Me gustaría recibir más información sobre sus servicios y motores. ¡Muchas gracias! 😊"+FUERA());
- document.getElementById("chat-ops").innerHTML=PROBLEMAS.map(p=>`<a class="op" rel="noopener" href="${wa(base()+" Tengo un problema con mi motor: *"+p+"*. ¿Me pueden ayudar a revisarlo? ¡Muchas gracias! 🔧"+FUERA(),p==="Garantías"?GARANTIAS:null)}">${p}</a>`).join("");if(enPC)chat.querySelectorAll("#chat-ops a").forEach(a=>a.target="_blank")}
+const op=(txt,msg,tipo)=>`<a class="op" href="#" rel="noopener" data-tipo="${tipo}" data-msg="${encodeURIComponent(msg)}">${txt}</a>`;
+function armar(){
+ const no=document.getElementById("chat-no");no.dataset.msg=encodeURIComponent(HOLA+" Me gustaría recibir más información sobre sus servicios y motores. ¡Muchas gracias! 😊"+FUERA());
+ document.getElementById("chat-ops").innerHTML=PROBLEMAS.map(p=>op(p,HOLA+" Tengo un problema con mi motor: *"+p+"*. ¿Me pueden ayudar a revisarlo? ¡Muchas gracias! 🔧"+FUERA(),p==="Garantías"?"garantia":"venta")).join("");
+ if(prodSel!==null){const m=motores[prodSel];
+  document.getElementById("chat-prod-n").textContent=m.t+(m.l?" · "+m.l:"");
+  document.getElementById("chat-prod-ops").innerHTML=
+   op("Precio",HOLA+" Me interesa el motor "+nomProd(m)+". ¿Me podrían dar el precio, por favor? ¡Muchas gracias! 😊"+FUERA(),"venta")+
+   op("Consulta sobre el producto",HOLA+" Tengo una consulta sobre el motor "+nomProd(m)+". ¿Me pueden ayudar, por favor? ¡Muchas gracias! 🔧"+FUERA(),"venta")}}
+async function enviar(a){const msg=decodeURIComponent(a.dataset.msg||"");let win=null;
+ if(enPC){win=window.open("","_blank");if(win)win.document.write("<p style='font:16px sans-serif;padding:24px'>Abriendo WhatsApp…</p>")}
+ const num=a.dataset.tipo==="garantia"?GARANTIAS:await turnoGlobal();const url=waURL(msg,num);
+ if(win)win.location.href=url;else location.href=url;setTimeout(()=>chat.close(),300)}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-contacto]");if(!b)return;e.preventDefault();
- prodSel=b.dataset.prod!=null?+b.dataset.prod:null;document.getElementById("chat-aviso").hidden=abierto();siguiente();armar();paso(1);if(chat.showModal)chat.showModal();});
+ prodSel=b.dataset.prod!=null?+b.dataset.prod:null;document.getElementById("chat-aviso").hidden=abierto();armar();paso(prodSel!==null?"prod":1);if(chat.showModal)chat.showModal();});
 document.getElementById("chat-si").onclick=()=>paso(2);
 document.getElementById("chat-volver").onclick=()=>paso(1);
 document.getElementById("chat-x").onclick=()=>chat.close();
-chat.addEventListener("click",e=>{if(e.target===chat)chat.close();if(e.target.closest("a.op"))setTimeout(()=>chat.close(),300)});
+chat.addEventListener("click",e=>{if(e.target===chat){chat.close();return}const a=e.target.closest("a.op");if(a){e.preventDefault();if(!a.dataset.busy){a.dataset.busy=1;enviar(a).finally(()=>delete a.dataset.busy)}}});
 
 const vi=document.getElementById("visor-inst"),fotosI=[...vi.querySelectorAll("img")];
 let act=0,tim=null,pausa=false;const quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
