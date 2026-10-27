@@ -330,18 +330,18 @@ const motores=[
  {f:1,c:"l4",m:"Honda",cod:"R18A1",l:"1.8 L",d:"Motor completo con múltiple de admisión y cuerpo de aceleración."},
  {f:4,c:"l4",m:"Hyundai / Kia",cod:"G4NH",l:"2.0 L",d:"Motor Nu completo, con bobinas y múltiple de admisión."},
  {f:6,c:"l4",m:"Nissan",cod:"HR16DE",l:"1.6 L",d:"Motor completo con cableado y múltiple de admisión."},
- {f:5,c:"l4",m:"Nissan",cod:"MR20DE",l:"2.0 L",d:"Motor completo con múltiple de admisión."},
- {f:2,c:"l4",m:"Nissan",cod:null,l:null,d:"Motor completo con múltiple de admisión."},
+ {f:2,c:"l4",m:"Nissan",cod:"MR20DE",l:"2.0 L",d:"Motor completo con múltiple de admisión."},
+ {f:5,c:"l4",m:"Nissan",cod:"QR25DE",l:"2.5 L",d:"Motor completo con múltiple de admisión."},
  {f:3,c:"l4",m:"Toyota",cod:"2AZ-FE",l:"2.4 L",d:"Motor sin múltiple de admisión, listo para armar."},
- {f:9,c:"l4",m:"Toyota",cod:null,l:null,d:"Motor completo con volante y clutch instalados."}
+ {f:9,c:"l4",m:"Toyota",cod:"2ZR-FE",l:"1.8 L",d:"Motor completo con volante y clutch instalados."}
 ];
-motores.forEach(m=>m.t=m.m+" "+(m.cod||"4 cilindros"));
+motores.forEach(m=>m.t=m.m+" "+m.cod);
 const FOTOS=["productos/motor-01.jpg", "productos/motor-02.jpg", "productos/motor-03.jpg", "productos/motor-04.jpg", "productos/motor-05.jpg", "productos/motor-06.jpg", "productos/motor-07.jpg", "productos/motor-08.jpg", "productos/motor-09.jpg", "productos/motor-10.jpg"];
 const cont=document.getElementById("prod"),visor=document.getElementById("visor");
 const GRUPOS=[["v6","Motores V6"],["l4","Motores 4 cilindros en línea"]];
 const tarjeta=(m,i)=>{const r=String(m.f+1).padStart(2,"0");return `<article class="card">
  <button type="button" class="foto" data-i="${i}" aria-label="Ver fotos del ${m.t}"><img src="${FOTOS[m.f]}" alt="${m.t}, varias vistas" loading="lazy" width="820" height="1025"></button>
- <div class="cuerpo"><div class="ref"><span>${m.m}</span><span>Ref. ${r}</span></div><h3>${m.cod||"Por confirmar"}</h3>
+ <div class="cuerpo"><div class="ref"><span>${m.m}</span><span>Ref. ${r}</span></div><h3>${m.cod}</h3>
  <div class="datos"><span>${m.c==="v6"?"V6":"4 cilindros"}</span>${m.l?`<span>${m.l}</span>`:""}<span>Gasolina</span></div><p>${m.d}</p>
  <button type="button" class="consulta" data-contacto data-prod="${i}">Consultar precio</button></div></article>`};
 cont.innerHTML=GRUPOS.map(([c,tit])=>{const lst=motores.map((m,i)=>[m,i]).filter(([m])=>m.c===c);
