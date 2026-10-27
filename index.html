@@ -120,6 +120,13 @@ dialog button{font:600 14px var(--body);background:transparent;color:#EEF1F8;bor
 @media (max-width:760px){.contacto{grid-template-columns:1fr;gap:28px}}
 
 [hidden]{display:none!important}
+/* video del taller */
+.taller{display:grid;grid-template-columns:1fr minmax(0,340px);gap:32px 56px;align-items:center}
+.taller .txt{min-width:0}
+.taller .txt p{color:var(--mute);max-width:46ch;margin:0 0 22px}
+.taller .marco{aspect-ratio:540/896;max-width:100%;width:100%;background:var(--photo);overflow:hidden;border-radius:6px;border-bottom:4px solid var(--red)}
+.taller video{display:block;width:100%;height:100%;object-fit:cover}
+@media (max-width:760px){.taller{grid-template-columns:1fr}.taller .marco{max-width:320px;justify-self:center}}
 /* contacto guiado */
 .nav-cta{font:600 14px var(--body);background:var(--red);color:#fff;border:0;padding:8px 14px;cursor:pointer}
 .nav-cta:hover{background:var(--blue)}
@@ -199,6 +206,17 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
       <div><h3>Culatas</h3><p>Cepillado, asentado de válvulas y prueba de fugas.</p></div>
       <div><h3>Diagnóstico</h3><p>Revisión del motor para decidir si conviene reparar o reconstruir.</p></div>
       <div><h3>Armado y ajuste</h3><p>Armado con torque de especificación y revisión final antes de entregar.</p></div>
+    </div>
+  </section>
+
+  <section id="taller">
+    <div class="taller">
+      <div class="txt">
+        <h2>Nuestro taller</h2>
+        <p>Un equipo que conoce cada motor por dentro. Así se vive un día de trabajo en nuestro taller de Calzada Aguilar Batres, zona 11.</p>
+        <button type="button" class="btn primario" style="cursor:pointer;font-family:var(--body)" data-contacto>Contáctenos</button>
+      </div>
+      <div class="marco"><video src="video/taller.mp4" poster="video/poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Video del equipo trabajando en el taller"></video></div>
     </div>
   </section>
 
