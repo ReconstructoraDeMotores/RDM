@@ -88,6 +88,12 @@ h2{font-family:var(--display);font-stretch:110%;font-weight:800;font-size:clamp(
 .card{border:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;min-width:0}
 .card .foto.sin{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:default;color:#5A6488;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
 .card .foto.sin svg{width:42%;height:auto}
+.card.agotado .foto{position:relative}
+.card.agotado .foto img,.card.agotado .foto.sin svg{filter:grayscale(1) brightness(.6)}
+.card.agotado .foto::after{content:"Fuera de stock";position:absolute;left:-20%;right:-20%;top:50%;transform:translateY(-50%) rotate(-24deg);background:#C8251B;color:#fff;font:800 clamp(15px,2.4vw,20px)/1 var(--display);font-stretch:115%;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:12px 0;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none}
+.card.agotado h3{color:var(--mute)}
+.stock.no{color:#C8251B}
+.stock.no::before{background:#C8251B}
 .stock{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:14px;color:var(--fg)}
 .stock::before{content:"";width:8px;height:8px;border-radius:50%;background:#2E9E5B}
 .resumen{font-family:var(--mono);font-size:13px;color:var(--mute);margin:0 0 28px}
@@ -315,7 +321,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
   </section>
 
   <footer>
-    <span>© 2026 Reconstructora de Motores Del Sur II · <small>v27.10-1050</small></span>
+    <span>© 2026 Reconstructora de Motores Del Sur II · <small>v27.10-1055</small></span>
     <span>Calzada Aguilar Batres 8-28, zona 11, Guatemala</span>
   </footer>
 </div>
@@ -356,14 +362,14 @@ const motores=[
 motores.forEach(m=>m.t=m.m+" "+m.cod);
 const FOTOS=["productos/motor-01.jpg", "productos/motor-02.jpg", "productos/motor-03.jpg", "productos/motor-04.jpg", "productos/motor-05.jpg", "productos/motor-06.jpg", "productos/motor-07.jpg", "productos/motor-08.jpg", "productos/motor-09.jpg", "productos/motor-10.jpg"];
 const cont=document.getElementById("prod"),visor=document.getElementById("visor");
-document.getElementById("resumen").innerHTML="<b>"+motores.reduce((a,m)=>a+m.s,0)+" motores</b> en stock · "+motores.length+" modelos";
+document.getElementById("resumen").innerHTML="<b>"+motores.reduce((a,m)=>a+m.s,0)+" motores</b> en stock · "+motores.filter(m=>m.s>0).length+" modelos disponibles";
 const GRUPOS=[["v6","Motores V6"],["l4","Motores 4 cilindros en línea"]];
-const tarjeta=(m,i)=>{const r=String(m.r).padStart(2,"0");return `<article class="card">
+const tarjeta=(m,i)=>{const r=String(m.r).padStart(2,"0");return `<article class="card${m.s<1?" agotado":""}">
  ${m.f===null?`<div class="foto sin"><svg viewBox="0 0 100 80" aria-hidden="true"><rect x="18" y="24" width="62" height="38" fill="none" stroke="currentColor" stroke-width="3"/><rect x="28" y="12" width="42" height="12" fill="none" stroke="currentColor" stroke-width="3"/><path d="M8 36h10M8 50h10M80 43h12" stroke="currentColor" stroke-width="3"/></svg><span>Foto próximamente</span></div>`:`<button type="button" class="foto" data-i="${i}" aria-label="Ver fotos del ${m.t}"><img src="${FOTOS[m.f]}" alt="${m.t}, varias vistas" loading="lazy" width="820" height="1025"></button>`}
  <div class="cuerpo"><div class="ref"><span>${m.m}</span><span>Ref. ${r}</span></div><h3>${m.cod}</h3>
  <div class="datos"><span>${m.c==="v6"?"V6":"4 cilindros"}</span>${m.l?`<span>${m.l}</span>`:""}<span>Gasolina</span></div><p>${m.d}</p>
- <span class="stock">${m.s} ${m.s===1?"disponible":"disponibles"}</span>
- <button type="button" class="consulta" data-contacto data-prod="${i}">Consultar precio</button></div></article>`};
+ ${m.s<1?`<span class="stock no">Sin stock por ahora</span>`:`<span class="stock">${m.s} ${m.s===1?"disponible":"disponibles"}</span>`}
+ <button type="button" class="consulta" data-contacto data-prod="${i}">${m.s<1?"Preguntar cuándo llega":"Consultar precio"}</button></div></article>`};
 cont.innerHTML=GRUPOS.map(([c,tit])=>{const lst=motores.map((m,i)=>[m,i]).filter(([m])=>m.c===c);
  return `<div class="grupo" data-c="${c}"><h3 class="g-tit">${tit} <span>${lst.length}</span></h3><div class="prod">${lst.map(([m,i])=>tarjeta(m,i)).join("")}</div></div>`}).join("");
 cont.addEventListener("click",e=>{const b=e.target.closest(".foto");if(!b)return;const m=motores[+b.dataset.i];
