@@ -299,7 +299,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
   </section>
 
   <footer>
-    <span>© 2026 Reconstructora de Motores Del Sur II</span>
+    <span>© 2026 Reconstructora de Motores Del Sur II · <small>v27.10-1040</small></span>
     <span>Calzada Aguilar Batres 8-28, zona 11, Guatemala</span>
   </footer>
 </div>
@@ -311,7 +311,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
     <p class="aviso" id="chat-aviso" hidden>🌙 En este momento estamos fuera de nuestro horario de atención (7:00 a. m. a 5:00 p. m.). Con gusto puede dejarnos su mensaje: lo recibiremos y le responderemos lo antes posible. ¡Gracias por su paciencia!</p>
     <span class="n">Pregunta 1 de 2</span>
     <p class="q">¿Tiene algún problema con su motor?</p>
-    <div class="sino"><button type="button" class="op" id="chat-si">Sí</button><a class="op" id="chat-no" href="#" target="_blank" rel="noopener">No</a></div>
+    <div class="sino"><button type="button" class="op" id="chat-si">Sí</button><a class="op" id="chat-no" href="#" rel="noopener">No</a></div>
     <p class="nota">¡Un asesor le atenderá con gusto por WhatsApp!</p>
   </div>
   <div class="paso-chat" data-p="2" hidden>
@@ -364,14 +364,15 @@ function siguiente(){let i=null;try{i=localStorage.getItem("rdm_turno")}catch(e)
  try{localStorage.setItem("rdm_turno",i)}catch(e){}turno=VENDEDORES[i]}
 function vendedor(){if(!turno)siguiente();return turno}
 const PROBLEMAS=["Falla mecánica","Fugas","Overhaul","Garantías"];
-const wa=(t,n)=>"https://wa.me/"+(n||vendedor())+"?text="+encodeURIComponent(t);
+const wa=(t,n)=>"https://api.whatsapp.com/send?phone="+(n||vendedor())+"&text="+encodeURIComponent(t);
+const enPC=matchMedia("(hover:hover) and (pointer:fine)").matches;
 function base(){let t="¡Hola! 👋 Les escribo desde la página web de Reconstructora de Motores Del Sur II.";
  if(prodSel!==null)t+=" Me interesa el motor *"+motores[prodSel].t+"*"+(motores[prodSel].l?" ("+motores[prodSel].l+")":"")+", Ref. "+String(motores[prodSel].f+1).padStart(2,"0")+".";return t}
 function abierto(){const h=+new Intl.DateTimeFormat("en-US",{timeZone:"America/Guatemala",hour:"numeric",hourCycle:"h23"}).format(new Date());return h>=7&&h<17}
 const FUERA=()=>abierto()?"":" Sé que en este momento están fuera de horario, quedo atento a su respuesta. 🙏";
 function paso(n){chat.querySelectorAll(".paso-chat").forEach(p=>p.hidden=p.dataset.p!=n)}
-function armar(){document.getElementById("chat-no").href=wa(base()+" Me gustaría recibir más información sobre sus servicios y motores. ¡Muchas gracias! 😊"+FUERA());
- document.getElementById("chat-ops").innerHTML=PROBLEMAS.map(p=>`<a class="op" target="_blank" rel="noopener" href="${wa(base()+" Tengo un problema con mi motor: *"+p+"*. ¿Me pueden ayudar a revisarlo? ¡Muchas gracias! 🔧"+FUERA(),p==="Garantías"?GARANTIAS:null)}">${p}</a>`).join("")}
+function armar(){chat.querySelectorAll("a.op").forEach(a=>{if(enPC)a.target="_blank";else a.removeAttribute("target")});document.getElementById("chat-no").href=wa(base()+" Me gustaría recibir más información sobre sus servicios y motores. ¡Muchas gracias! 😊"+FUERA());
+ document.getElementById("chat-ops").innerHTML=PROBLEMAS.map(p=>`<a class="op" rel="noopener" href="${wa(base()+" Tengo un problema con mi motor: *"+p+"*. ¿Me pueden ayudar a revisarlo? ¡Muchas gracias! 🔧"+FUERA(),p==="Garantías"?GARANTIAS:null)}">${p}</a>`).join("");if(enPC)chat.querySelectorAll("#chat-ops a").forEach(a=>a.target="_blank")}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-contacto]");if(!b)return;e.preventDefault();
  prodSel=b.dataset.prod!=null?+b.dataset.prod:null;document.getElementById("chat-aviso").hidden=abierto();siguiente();armar();paso(1);if(chat.showModal)chat.showModal();});
 document.getElementById("chat-si").onclick=()=>paso(2);
