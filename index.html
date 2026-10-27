@@ -119,6 +119,19 @@ dialog button{font:600 14px var(--body);background:transparent;color:#EEF1F8;bor
 .pend{color:var(--mute);font-weight:400;font-style:italic}
 @media (max-width:760px){.contacto{grid-template-columns:1fr;gap:28px}}
 
+/* franja de lema */
+.lema{background:var(--blue);color:var(--on-accent);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));border-top:0}
+.lema .in{max-width:1080px;margin:0 auto;padding-block:56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:1.4fr 1fr;gap:24px 48px;align-items:end}
+.lema p{margin:0}
+.lema .grande{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:clamp(30px,5vw,58px);line-height:.98;text-transform:uppercase;text-wrap:balance}
+.lema .grande span{display:block;opacity:.75}
+.lema .chico{font-size:18px;max-width:40ch}
+.lema+section{border-top:0}
+@media (max-width:760px){.lema .in{grid-template-columns:1fr}}
+.mapa{margin-top:32px;aspect-ratio:16/9;max-width:100%;width:100%;border:1px solid var(--line);background:var(--soft)}
+.mapa iframe{display:block;width:100%;height:100%;border:0}
+.mapa.prev{display:grid;place-items:center;text-align:center;color:var(--mute);padding:24px}
+@media (max-width:560px){.mapa{aspect-ratio:4/5}}
 footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--mute)}
 @media (prefers-reduced-motion:reduce){.card .foto img{transition:none}}
 </style>
@@ -146,7 +159,8 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
       <p class="lead">Reconstrucción, rectificado y armado de motores a gasolina y diésel. Medimos cada pieza, la dejamos dentro de tolerancia y le entregamos un motor listo para trabajar.</p>
       <div class="botones">
         <a class="btn primario" href="#productos">Ver productos</a>
-        <a class="btn sec" href="https://waze.com/ul?q=Calzada%20Aguilar%20Batres%208-28%20zona%2011%20Guatemala&amp;navigate=yes" target="_blank" rel="noopener">Cómo llegar con Waze</a>
+        <a class="btn sec" href="https://waze.com/ul?q=Calzada%20Aguilar%20Batres%208-28%20zona%2011%20Guatemala&amp;navigate=yes" target="_blank" rel="noopener">Llegar con Waze</a>
+        <a class="btn sec" href="https://www.google.com/maps/search/?api=1&amp;query=Calzada+Aguilar+Batres+8-28+zona+11+Guatemala" target="_blank" rel="noopener">Ver en Google Maps</a>
       </div>
     </div>
     <div class="logo-hero"><img src="logo.png" alt="Reconstructora de Motores Del Sur" width="640" height="404"></div>
@@ -187,6 +201,13 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
     </div>
   </section>
 
+  <section class="lema" aria-label="Nuestro compromiso">
+    <div class="in">
+      <p class="grande">Deje su motor en nuestras manos.<span>Nosotros le devolvemos la fuerza.</span></p>
+      <p class="chico">Su problema lo resolvemos aquí, con medición en cada pieza y el trabajo explicado de principio a fin.</p>
+    </div>
+  </section>
+
   <section id="contacto">
     <h2>Visítenos</h2>
     <p class="sub">Traiga su motor o su vehículo y le damos un diagnóstico.</p>
@@ -202,6 +223,7 @@ footer{border-top:1px solid var(--line);padding-block:28px 40px;display:flex;jus
         <dt>Horario</dt><dd class="pend">Por agregar</dd>
       </dl>
     </div>
+    <div class="mapa"><iframe title="Mapa de Reconstructora de Motores Del Sur II" src="https://www.google.com/maps?q=Calzada+Aguilar+Batres+8-28+zona+11+Guatemala&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
   </section>
 
   <footer>
